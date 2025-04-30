@@ -1,0 +1,9 @@
+ image: busybox
+    pages:
+      stage: deploy
+      script:
+        - echo "Nothing to do, static site is already in public"
+      artifacts:
+        paths:
+        - public
+      expire_in: 1 day
