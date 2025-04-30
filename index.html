@@ -58,9 +58,41 @@
         /* Style for links in notes */
         .note-link { color: #4f46e5; text-decoration: underline; word-break: break-all; }
         .note-link:hover { color: #4338ca; }
-        /* Style for notes list items */
-        .note-item { display: flex; align-items: flex-start; margin-bottom: 0.25rem; }
-        .note-icon { width: 1.25rem; text-align: center; margin-right: 0.5rem; flex-shrink: 0; padding-top: 0.125rem; }
+        /* Style for notes & activity list items */
+        .list-item { display: flex; align-items: flex-start; margin-bottom: 0.25rem; }
+        .list-icon {
+            width: 1.25rem; /* w-5 */
+            text-align: center;
+            margin-right: 0.5rem; /* mr-2 */
+            flex-shrink: 0;
+            padding-top: 0.125rem; /* Adjust vertical alignment slightly */
+            color: #6b7280; /* Default icon color: gray-500 */
+        }
+        /* Specific Note icon colors */
+        .list-icon.note-icon.fa-charging-station { color: #3b82f6; } /* blue-500 */
+        .list-icon.note-icon.fa-link { color: #6366f1; } /* indigo-500 */
+        .list-icon.note-icon.fa-car, .list-icon.note-icon.fa-route { color: #1f2937; } /* gray-800 */
+        .list-icon.note-icon.fa-book { color: #a855f7; } /* purple-500 */
+        .list-icon.note-icon.fa-dog { color: #f59e0b; } /* amber-500 */
+        .list-icon.note-icon.fa-house-user { color: #10b981; } /* green-500 */
+        .list-icon.note-icon.fa-passport { color: #ef4444; } /* red-500 */
+        .list-icon.note-icon.fa-triangle-exclamation { color: #f97316; } /* orange-500 */
+        .list-icon.note-icon.fa-circle-info { color: #0ea5e9; } /* sky-500 */
+        .list-icon.note-icon.fa-lightbulb { color: #eab308; } /* yellow-500 */
+        /* Specific Activity icon colors */
+        .list-icon.activity-icon.fa-person-hiking { color: #22c55e; } /* green-500 */
+        .list-icon.activity-icon.fa-mug-saucer { color: #a16207; } /* yellow-700 */
+        .list-icon.activity-icon.fa-car, .list-icon.activity-icon.fa-route, .list-icon.activity-icon.fa-car-side { color: #1f2937; } /* gray-800 */
+        .list-icon.activity-icon.fa-umbrella-beach { color: #06b6d4; } /* cyan-500 */
+        .list-icon.activity-icon.fa-person-swimming { color: #3b82f6; } /* blue-500 */
+        .list-icon.activity-icon.fa-building { color: #78716c; } /* stone-500 */
+        .list-icon.activity-icon.fa-flag-checkered { color: #10b981; } /* green-500 */
+        .list-icon.activity-icon.fa-bed { color: #8b5cf6; } /* violet-500 */
+        .list-icon.activity-icon.fa-question-circle { color: #6b7280; } /* gray-500 */
+        .list-icon.activity-icon.fa-map-marker-alt { color: #f43f5e; } /* rose-500 */
+        .list-icon.activity-icon.fa-plane-departure { color: #0ea5e9; } /* sky-500 */
+
+
         /* Style for charger info - initially hidden */
         .charger-info { display: none; }
         /* Style for the toggle button */
@@ -103,54 +135,28 @@
         // Structured itinerary data
         const itineraryData = [
              {
-                day: "Wednesday",
-                date: "18/06/2025",
-                startLocation: "Home", // Assuming Portland area start
-                destination: "Baker City, OR",
-                driveTime: 5,
-                miles: 310,
-                notes: [
-                    "Drive to Baker City after 12 PM",
-                    { type: 'charger', text: "Tesla Route (approx): Home --(~20mi)--> Troutdale --(~70mi)--> The Dalles --(~125mi)--> Pendleton --(~100mi)--> Baker City" }
-                ],
+                day: "Wednesday", date: "18/06/2025", startLocation: "Home", destination: "Baker City, OR", driveTime: 5, miles: 310,
+                notes: [ "Drive to Baker City after 12 PM", { type: 'charger', text: "Tesla Route (approx): Home --(~20mi)--> Troutdale --(~70mi)--> The Dalles --(~125mi)--> Pendleton --(~100mi)--> Baker City" } ],
                 activities: []
             },
             {
                 day: "Thursday", date: "19/06/2025", startLocation: "Baker City, OR", destination: "Sun Valley, ID", driveTime: 4.5, miles: 280,
-                notes: [
-                    "Find activity on drive.",
-                    "Boise is ~2 hrs away.",
-                    { type: 'charger', text: "Tesla Route (approx): Baker City --(~130mi)--> Boise --(~130mi)--> Twin Falls --(~85mi)--> Sun Valley (Destination Chargers)" }
-                ],
+                notes: [ "Find activity on drive.", "Boise is ~2 hrs away.", { type: 'charger', text: "Tesla Route (approx): Baker City --(~130mi)--> Boise --(~130mi)--> Twin Falls --(~85mi)--> Sun Valley (Destination Chargers)" } ],
                 activities: [ "7AM - 8AM: Breakfast", "8AM - 8:30AM: Drive to trail head (30 mins drive from Baker City)", "8:30AM - 1PM: Hike Rock Creek Trail (7 miles, 2200ft, 4hrs)", "1PM - 6PM: Drive back to Sun Valley, ID" ]
             },
             {
                 day: "Friday", date: "20/06/2025", startLocation: "Sun Valley, ID", destination: "Salt Lake City, UT", driveTime: 4.5, miles: 295,
-                notes: [
-                    "Remember leashes may be required near trailheads/parking areas.",
-                    "Dog-friendly info source: https://visitsunvalley.com/things-to-do/dog-friendly/",
-                    // **NEW**: Charger info for Sun Valley -> SLC
-                    { type: 'charger', text: "Tesla Route (approx): Sun Valley --(~85mi)--> Twin Falls --(~120mi)--> Tremonton, UT --(~85mi)--> Salt Lake City" }
-                ],
+                notes: [ "Remember leashes may be required near trailheads/parking areas.", "Dog-friendly info source: https://visitsunvalley.com/things-to-do/dog-friendly/", { type: 'charger', text: "Tesla Route (approx): Sun Valley --(~85mi)--> Twin Falls --(~120mi)--> Tremonton, UT --(~85mi)--> Salt Lake City" } ],
                 activities: [ "Hike a dog-friendly trail (all trails welcome dogs)", "Visit a dog beach at Redfish, Alturas, or Pettit Lake", "Let dogs swim in Hulen Pond or Big Wood River (off bike path)", "Relax at dog-friendly Galena Lodge after activities" ]
             },
             {
                 day: "Saturday", date: "21/06/2025", startLocation: "Salt Lake City, UT", destination: "Steamboat Springs, CO", driveTime: 6, miles: 333,
-                notes: [
-                    "Check trail conditions upon arrival in Steamboat.",
-                    // **NEW**: Charger info for SLC -> Steamboat
-                    { type: 'charger', text: "Tesla Route (approx): SLC --(~160mi)--> Rawlins, WY --(~110mi)--> Laramie, WY --(~120mi)--> Steamboat Springs (Destination Chargers)" } // Note: Steamboat doesn't have a Supercharger yet, relies on Destination Charging.
-                ],
+                notes: [ "Check trail conditions upon arrival in Steamboat.", { type: 'charger', text: "Tesla Route (approx): SLC --(~160mi)--> Rawlins, WY --(~110mi)--> Laramie, WY --(~120mi)--> Steamboat Springs (Destination Chargers)" } ],
                 activities: [ "Morning: Depart Salt Lake City", "Afternoon/Evening: Drive to Steamboat Springs & Settle in" ]
             },
             {
                 day: "Sunday", date: "22/06/2025", startLocation: "Steamboat Springs, CO", destination: "Omaha, NE", driveTime: 10, miles: 668,
-                notes: [
-                    "Need 2-3 Books, maybe LOTR.",
-                    "Find stops every 2-hrs to let the dogs out.",
-                    // **NEW**: Charger info for Steamboat -> Omaha
-                    { type: 'charger', text: "Tesla Route (approx): Steamboat --(~120mi)--> Laramie, WY --(~140mi)--> Cheyenne, WY --(~100mi)--> North Platte, NE --(~140mi)--> Kearney, NE --(~130mi)--> Lincoln, NE --(~60mi)--> Omaha" }
-                ],
+                notes: [ "Need 2-3 Books, maybe LOTR.", "Find stops every 2-hrs to let the dogs out.", { type: 'charger', text: "Tesla Route (approx): Steamboat --(~120mi)--> Laramie, WY --(~140mi)--> Cheyenne, WY --(~100mi)--> North Platte, NE --(~140mi)--> Kearney, NE --(~130mi)--> Lincoln, NE --(~60mi)--> Omaha" } ],
                 activities: [
                     { type: 'section', title: 'Morning Hike Options:'},
                     { type: 'hike', name: 'Fish Creek Falls Trail (Lower Overlook)', distance: '0.5 miles RT', elevationGain: '~160 ft', imagePlaceholder: 'https://placehold.co/80x80/a7f3d0/1f2937?text=Falls', dogFriendly: true, notes: 'Paved, accessible trail to main overlook.' },
@@ -162,21 +168,13 @@
             },
             {
                 day: "Monday", date: "23/06/2025", startLocation: "Omaha, NE", destination: "Chicago, IL", driveTime: 7, miles: 468,
-                notes: [
-                    "Stay with Anisha and Nav",
-                    // **NEW**: Charger info for Omaha -> Chicago
-                    { type: 'charger', text: "Tesla Route (approx): Omaha --(~130mi)--> Des Moines, IA --(~115mi)--> Coralville, IA --(~60mi)--> Davenport, IA --(~160mi)--> Chicago Area" }
-                ],
+                notes: [ "Stay with Anisha and Nav", { type: 'charger', text: "Tesla Route (approx): Omaha --(~130mi)--> Des Moines, IA --(~115mi)--> Coralville, IA --(~60mi)--> Davenport, IA --(~160mi)--> Chicago Area" } ],
                 activities: ["Morning: Driving", "Afternoon: Arrive in Chicago", "Evening: TBD"]
             },
             { day: "Tuesday", date: "24/06/2025", startLocation: "Chicago, IL", destination: "Chicago, IL", driveTime: 0, miles: 0, notes: ["Stay with Anisha and Nav"], activities: ["Morning: TBD", "Afternoon: TBD", "Evening: TBD"] },
             {
                 day: "Wednesday", date: "25/06/2025", startLocation: "Chicago, IL", destination: "Buffalo, NY", driveTime: 8, miles: 533,
-                notes: [
-                    "Drive via Canada (check border crossing requirements)",
-                    // **NEW**: Charger info for Chicago -> Buffalo via Canada
-                    { type: 'charger', text: "Tesla Route (approx): Chicago --(~150mi)--> Kalamazoo, MI --(~120mi)--> Detroit/Windsor, ON --(~120mi)--> London, ON --(~70mi)--> Woodstock, ON --(~50mi)--> Hamilton, ON --(~70mi)--> Buffalo" }
-                ],
+                notes: [ "Drive via Canada (check border crossing requirements)", { type: 'charger', text: "Tesla Route (approx): Chicago --(~150mi)--> Kalamazoo, MI --(~120mi)--> Detroit/Windsor, ON --(~120mi)--> London, ON --(~70mi)--> Woodstock, ON --(~50mi)--> Hamilton, ON --(~70mi)--> Buffalo" } ],
                 activities: ["Morning: Driving", "Afternoon: Arrive in Buffalo", "Evening: TBD"]
             }
         ];
@@ -228,15 +226,28 @@
                 let detailsHtml = '';
                 let hasActivities = false;
 
-                // Handle activities
+                // **MODIFIED**: Handle activities with contextual icons
                 if (item.activities && item.activities.length > 0) {
-                     let currentListHtml = ''; let isFirstSection = true;
+                     let activityListHtml = ''; // Accumulate list items for activities
+                     let isFirstActivitySection = true; // Track if it's the first section title for activities
+
                      item.activities.forEach((activity, actIndex) => {
+                         // Handle Section Title Object
                          if (typeof activity === 'object' && activity.type === 'section') {
-                             if (currentListHtml) { detailsHtml += `<ul class="list-disc list-inside space-y-1 text-gray-600 mb-4">${currentListHtml}</ul>`; currentListHtml = ''; }
-                             detailsHtml += `<h3 class="text-md details-section-title ${isFirstSection ? 'pt-4 border-t-0' : ''}">${activity.title}</h3>`; isFirstSection = false;
-                         } else if (typeof activity === 'object' && activity.type === 'hike') {
-                              if (currentListHtml) { detailsHtml += `<ul class="list-disc list-inside space-y-1 text-gray-600 mb-4">${currentListHtml}</ul>`; currentListHtml = ''; }
+                             if (activityListHtml) { // Close previous list if open
+                                 detailsHtml += `<ul class="list-none space-y-1 text-gray-600 mb-4">${activityListHtml}</ul>`;
+                                 activityListHtml = ''; // Reset buffer
+                             }
+                             detailsHtml += `<h3 class="text-md details-section-title ${isFirstActivitySection ? 'pt-4 border-t-0' : ''}">${activity.title}</h3>`;
+                             isFirstActivitySection = false;
+                         }
+                         // Handle Hike Object
+                         else if (typeof activity === 'object' && activity.type === 'hike') {
+                              if (activityListHtml) { // Close previous list if open
+                                 detailsHtml += `<ul class="list-none space-y-1 text-gray-600 mb-4">${activityListHtml}</ul>`;
+                                 activityListHtml = ''; // Reset buffer
+                             }
+                             // Add hike card (add pt-4 only if it's the very first item overall)
                               detailsHtml += `
                                 <div class="hike-card ${actIndex === 0 ? 'mt-4' : ''}">
                                     <img src="${activity.imagePlaceholder}" alt="${activity.name}" class="hike-image" onerror="this.style.display='none'">
@@ -248,22 +259,48 @@
                                         </div>
                                         ${activity.notes ? `<p class="text-xs text-gray-500 mt-1">${activity.notes}</p>` : ''}
                                     </div>
-                                </div>`; isFirstSection = false;
-                         } else if (typeof activity === 'string') {
+                                </div>`;
+                             isFirstActivitySection = false; // A hike card means we're past the first potential section
+                         }
+                         // Handle regular string activities
+                         else if (typeof activity === 'string') {
+                             // If this is the first activity overall and it's a string, add the default "Activities:" title
                              if (actIndex === 0 && !(typeof item.activities[0] === 'object' && item.activities[0].type === 'section')) {
-                                 detailsHtml += `<h3 class="text-md details-section-title pt-4 border-t-0">Activities:</h3>`; isFirstSection = false;
+                                 detailsHtml += `<h3 class="text-md details-section-title pt-4 border-t-0">Activities:</h3>`;
+                                 isFirstActivitySection = false;
                              }
-                             currentListHtml += `<li>${activity}</li>`;
+
+                             let iconClass = 'fas fa-tasks'; // Default activity icon
+                             const lowerActivity = activity.toLowerCase();
+
+                             if (lowerActivity.includes('hike') || lowerActivity.includes('trail')) { iconClass = 'fas fa-person-hiking'; }
+                             else if (lowerActivity.includes('breakfast')) { iconClass = 'fas fa-mug-saucer'; }
+                             else if (lowerActivity.includes('drive') || lowerActivity.includes('driving')) { iconClass = 'fas fa-car'; }
+                             else if (lowerActivity.includes('visit') || lowerActivity.includes('lodge') || lowerActivity.includes('relax')) { iconClass = 'fas fa-map-marker-alt'; }
+                             else if (lowerActivity.includes('beach')) { iconClass = 'fas fa-umbrella-beach'; }
+                             else if (lowerActivity.includes('swim')) { iconClass = 'fas fa-person-swimming'; }
+                             else if (lowerActivity.includes('depart')) { iconClass = 'fas fa-plane-departure'; }
+                             else if (lowerActivity.includes('arrive')) { iconClass = 'fas fa-flag-checkered'; }
+                             else if (lowerActivity.includes('settle in')) { iconClass = 'fas fa-bed'; }
+                             else if (lowerActivity.includes('tbd')) { iconClass = 'fas fa-question-circle'; }
+
+                             activityListHtml += `<li class="list-item"><i class="${iconClass} list-icon activity-icon"></i><span class="flex-1">${activity}</span></li>`;
                          }
                      });
-                     if (currentListHtml) {
-                         if (isFirstSection) { detailsHtml += `<h3 class="text-md details-section-title pt-4 border-t-0">Activities:</h3>`; }
-                         detailsHtml += `<ul class="list-disc list-inside space-y-1 text-gray-600">${currentListHtml}</ul>`;
+
+                     // If there are remaining list items after the loop, add the list
+                     if (activityListHtml) {
+                         // Check if a title needs to be added before this list (if no section/hike preceded it)
+                         if (isFirstActivitySection) {
+                             detailsHtml += `<h3 class="text-md details-section-title pt-4 border-t-0">Activities:</h3>`;
+                         }
+                         detailsHtml += `<ul class="list-none space-y-1 text-gray-600">${activityListHtml}</ul>`;
                      }
                      hasActivities = true;
                 }
 
-                // Handle Notes
+
+                // Handle Notes with contextual icons
                 if (item.notes && item.notes.length > 0) {
                     detailsHtml += `<h3 class="text-md details-section-title ${!hasActivities ? 'pt-4 border-t-0' : ''}">Notes:</h3>`;
                     detailsHtml += `<ul class="list-none space-y-1 text-gray-600">`;
@@ -271,14 +308,37 @@
                         const noteText = (typeof note === 'object' && note.type === 'charger') ? note.text : note;
                         const isChargerNote = (typeof note === 'object' && note.type === 'charger');
                         const isLink = typeof noteText === 'string' && (noteText.startsWith('http://') || noteText.startsWith('https://'));
-                        let iconHtml = '<i class="fas fa-circle note-icon text-gray-400" style="font-size: 0.4em;"></i>';
-                        let liClass = 'note-item';
-                        if (isChargerNote) { iconHtml = '<i class="fas fa-charging-station note-icon text-blue-500"></i>'; liClass += ' charger-info'; }
-                        else if (isLink) { iconHtml = '<i class="fas fa-link note-icon text-indigo-500"></i>'; }
+
+                        let iconClass = 'fas fa-circle-info'; // Default note icon
+                        let liClass = 'list-item'; // Use generic class
+
+                        // Determine icon based on note type or content
+                        if (isChargerNote) {
+                            iconClass = 'fas fa-charging-station';
+                            liClass += ' charger-info'; // Keep specific class for toggling
+                        } else if (isLink) {
+                            iconClass = 'fas fa-link';
+                        } else if (typeof noteText === 'string') {
+                            const lowerNote = noteText.toLowerCase();
+                            if (lowerNote.includes('drive to') || lowerNote.includes('depart')) { iconClass = 'fas fa-route'; }
+                            else if (lowerNote.includes('book') || lowerNote.includes('lotr')) { iconClass = 'fas fa-book'; }
+                            else if (lowerNote.includes('dog') || lowerNote.includes('leash')) { iconClass = 'fas fa-dog'; }
+                            else if (lowerNote.includes('stay with')) { iconClass = 'fas fa-house-user'; }
+                            else if (lowerNote.includes('canada') || lowerNote.includes('border crossing')) { iconClass = 'fas fa-passport'; }
+                            else if (lowerNote.includes('trail condition')) { iconClass = 'fas fa-triangle-exclamation'; }
+                            else if (lowerNote.includes('find activity') || lowerNote.includes('remember')) { iconClass = 'fas fa-lightbulb'; }
+                        }
+
                         const displayStyle = isChargerNote && !chargerInfoVisible ? 'style="display: none;"' : '';
-                        detailsHtml += `<li class="${liClass}" ${displayStyle}>${iconHtml}<span class="flex-1">`;
-                        if (isLink) { detailsHtml += `<a href="${noteText}" target="_blank" rel="noopener noreferrer" class="note-link">${noteText}</a>`; }
-                        else { detailsHtml += noteText; }
+                        detailsHtml += `<li class="${liClass}" ${displayStyle}>`;
+                        // Add 'note-icon' class specifically for notes icons styling
+                        detailsHtml += `<i class="${iconClass} list-icon note-icon"></i>`;
+                        detailsHtml += `<span class="flex-1">`;
+                        if (isLink) {
+                            detailsHtml += `<a href="${noteText}" target="_blank" rel="noopener noreferrer" class="note-link">${noteText}</a>`;
+                        } else {
+                            detailsHtml += noteText;
+                        }
                         detailsHtml += `</span></li>`;
                     });
                     detailsHtml += '</ul>';
