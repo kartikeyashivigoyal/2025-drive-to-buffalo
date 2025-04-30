@@ -91,6 +91,7 @@
         .list-icon.activity-icon.fa-question-circle { color: #6b7280; } /* gray-500 */
         .list-icon.activity-icon.fa-map-marker-alt { color: #f43f5e; } /* rose-500 */
         .list-icon.activity-icon.fa-plane-departure { color: #0ea5e9; } /* sky-500 */
+        .list-icon.activity-icon.fa-tasks { color: #6b7280; } /* gray-500 */
 
 
         /* Style for charger info - initially hidden */
@@ -105,15 +106,49 @@
             transition: background-color 0.2s ease-in-out;
             cursor: pointer;
         }
-        .toggle-button:hover {
-            background-color: #4338ca; /* indigo-700 */
+        .toggle-button:hover { background-color: #4338ca; }
+        .toggle-button.active { background-color: #6b7280; }
+        .toggle-button.active:hover { background-color: #4b5563; }
+
+        /* **NEW**: Styles for Summary Widget */
+        .summary-widget {
+            background-color: white;
+            border-radius: 0.5rem; /* rounded-lg */
+            padding: 1rem 1.5rem; /* p-4 md:p-6 */
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* shadow-md */
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 columns on small screens */
+            gap: 1rem; /* gap-4 */
+            margin-bottom: 1.5rem; /* mb-6 */
         }
-         .toggle-button.active {
-            background-color: #6b7280; /* gray-500 */
+        @media (min-width: 640px) { /* sm breakpoint */
+            .summary-widget {
+                grid-template-columns: repeat(4, 1fr); /* 4 columns on larger screens */
+            }
         }
-         .toggle-button.active:hover {
-             background-color: #4b5563; /* gray-600 */
-         }
+        .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem; /* space-x-3 */
+        }
+        .summary-icon {
+            font-size: 1.5rem; /* text-2xl */
+            color: #4f46e5; /* indigo-600 */
+            width: 2.5rem; /* w-10, fixed width */
+            text-align: center;
+        }
+        .summary-text .value {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600; /* font-semibold */
+            color: #1f2937; /* text-gray-800 */
+            display: block; /* Ensure value is on its own line */
+        }
+        .summary-text .label {
+            font-size: 0.875rem; /* text-sm */
+            color: #6b7280; /* text-gray-500 */
+            display: block; /* Ensure label is on its own line */
+        }
+
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -122,6 +157,38 @@
 <body class="p-4 md:p-8">
     <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-4">Drive to Buffalo Itinerary</h1>
+
+        <div id="summary-widget" class="summary-widget">
+            <div class="summary-item">
+                <i class="fas fa-road summary-icon"></i>
+                <div class="summary-text">
+                    <span id="total-miles" class="value">--</span>
+                    <span class="label">Miles Driven</span>
+                </div>
+            </div>
+            <div class="summary-item">
+                <i class="fas fa-clock summary-icon"></i>
+                <div class="summary-text">
+                    <span id="total-hours" class="value">--</span>
+                    <span class="label">Hours Driven</span>
+                </div>
+            </div>
+            <div class="summary-item">
+                <i class="fas fa-calendar-days summary-icon"></i>
+                <div class="summary-text">
+                    <span id="total-days" class="value">--</span>
+                    <span class="label">Total Days</span>
+                </div>
+            </div>
+            <div class="summary-item">
+                <i class="fas fa-tasks summary-icon"></i>
+                <div class="summary-text">
+                    <span id="total-activities" class="value">--</span>
+                    <span class="label">Planned Activities</span>
+                </div>
+            </div>
+        </div>
+
         <div class="text-center mb-6">
             <button id="toggle-charger-button" class="toggle-button">
                 <i class="fas fa-charging-station mr-2"></i>Display Charging Info
@@ -183,6 +250,32 @@
         const toggleButton = document.getElementById('toggle-charger-button');
         let chargerInfoVisible = false;
 
+        // **NEW**: Calculate Totals
+        let totalMiles = 0;
+        let totalHours = 0;
+        let totalActivities = 0;
+        const totalDays = itineraryData.length;
+
+        itineraryData.forEach(item => {
+            totalMiles += item.miles || 0;
+            totalHours += item.driveTime || 0;
+            if (item.activities) {
+                item.activities.forEach(activity => {
+                    // Count only actual activities (strings or hike objects), not section titles
+                    if (typeof activity === 'string' || (typeof activity === 'object' && activity.type === 'hike')) {
+                        totalActivities++;
+                    }
+                });
+            }
+        });
+
+        // **NEW**: Update Summary Widget
+        document.getElementById('total-miles').textContent = totalMiles.toLocaleString(); // Add comma for thousands
+        document.getElementById('total-hours').textContent = totalHours.toLocaleString();
+        document.getElementById('total-days').textContent = totalDays;
+        document.getElementById('total-activities').textContent = totalActivities;
+
+
         // Function to create and append itinerary cards
         function displayItinerary() {
             container.innerHTML = ''; // Clear existing cards
@@ -226,28 +319,16 @@
                 let detailsHtml = '';
                 let hasActivities = false;
 
-                // **MODIFIED**: Handle activities with contextual icons
+                // Handle activities with contextual icons
                 if (item.activities && item.activities.length > 0) {
-                     let activityListHtml = ''; // Accumulate list items for activities
-                     let isFirstActivitySection = true; // Track if it's the first section title for activities
-
+                     let activityListHtml = '';
+                     let isFirstActivitySection = true;
                      item.activities.forEach((activity, actIndex) => {
-                         // Handle Section Title Object
                          if (typeof activity === 'object' && activity.type === 'section') {
-                             if (activityListHtml) { // Close previous list if open
-                                 detailsHtml += `<ul class="list-none space-y-1 text-gray-600 mb-4">${activityListHtml}</ul>`;
-                                 activityListHtml = ''; // Reset buffer
-                             }
-                             detailsHtml += `<h3 class="text-md details-section-title ${isFirstActivitySection ? 'pt-4 border-t-0' : ''}">${activity.title}</h3>`;
-                             isFirstActivitySection = false;
-                         }
-                         // Handle Hike Object
-                         else if (typeof activity === 'object' && activity.type === 'hike') {
-                              if (activityListHtml) { // Close previous list if open
-                                 detailsHtml += `<ul class="list-none space-y-1 text-gray-600 mb-4">${activityListHtml}</ul>`;
-                                 activityListHtml = ''; // Reset buffer
-                             }
-                             // Add hike card (add pt-4 only if it's the very first item overall)
+                             if (activityListHtml) { detailsHtml += `<ul class="list-none space-y-1 text-gray-600 mb-4">${activityListHtml}</ul>`; activityListHtml = ''; }
+                             detailsHtml += `<h3 class="text-md details-section-title ${isFirstActivitySection ? 'pt-4 border-t-0' : ''}">${activity.title}</h3>`; isFirstActivitySection = false;
+                         } else if (typeof activity === 'object' && activity.type === 'hike') {
+                              if (activityListHtml) { detailsHtml += `<ul class="list-none space-y-1 text-gray-600 mb-4">${activityListHtml}</ul>`; activityListHtml = ''; }
                               detailsHtml += `
                                 <div class="hike-card ${actIndex === 0 ? 'mt-4' : ''}">
                                     <img src="${activity.imagePlaceholder}" alt="${activity.name}" class="hike-image" onerror="this.style.display='none'">
@@ -259,20 +340,12 @@
                                         </div>
                                         ${activity.notes ? `<p class="text-xs text-gray-500 mt-1">${activity.notes}</p>` : ''}
                                     </div>
-                                </div>`;
-                             isFirstActivitySection = false; // A hike card means we're past the first potential section
-                         }
-                         // Handle regular string activities
-                         else if (typeof activity === 'string') {
-                             // If this is the first activity overall and it's a string, add the default "Activities:" title
+                                </div>`; isFirstActivitySection = false;
+                         } else if (typeof activity === 'string') {
                              if (actIndex === 0 && !(typeof item.activities[0] === 'object' && item.activities[0].type === 'section')) {
-                                 detailsHtml += `<h3 class="text-md details-section-title pt-4 border-t-0">Activities:</h3>`;
-                                 isFirstActivitySection = false;
+                                 detailsHtml += `<h3 class="text-md details-section-title pt-4 border-t-0">Activities:</h3>`; isFirstActivitySection = false;
                              }
-
-                             let iconClass = 'fas fa-tasks'; // Default activity icon
-                             const lowerActivity = activity.toLowerCase();
-
+                             let iconClass = 'fas fa-tasks'; const lowerActivity = activity.toLowerCase();
                              if (lowerActivity.includes('hike') || lowerActivity.includes('trail')) { iconClass = 'fas fa-person-hiking'; }
                              else if (lowerActivity.includes('breakfast')) { iconClass = 'fas fa-mug-saucer'; }
                              else if (lowerActivity.includes('drive') || lowerActivity.includes('driving')) { iconClass = 'fas fa-car'; }
@@ -283,22 +356,15 @@
                              else if (lowerActivity.includes('arrive')) { iconClass = 'fas fa-flag-checkered'; }
                              else if (lowerActivity.includes('settle in')) { iconClass = 'fas fa-bed'; }
                              else if (lowerActivity.includes('tbd')) { iconClass = 'fas fa-question-circle'; }
-
                              activityListHtml += `<li class="list-item"><i class="${iconClass} list-icon activity-icon"></i><span class="flex-1">${activity}</span></li>`;
                          }
                      });
-
-                     // If there are remaining list items after the loop, add the list
                      if (activityListHtml) {
-                         // Check if a title needs to be added before this list (if no section/hike preceded it)
-                         if (isFirstActivitySection) {
-                             detailsHtml += `<h3 class="text-md details-section-title pt-4 border-t-0">Activities:</h3>`;
-                         }
+                         if (isFirstActivitySection) { detailsHtml += `<h3 class="text-md details-section-title pt-4 border-t-0">Activities:</h3>`; }
                          detailsHtml += `<ul class="list-none space-y-1 text-gray-600">${activityListHtml}</ul>`;
                      }
                      hasActivities = true;
                 }
-
 
                 // Handle Notes with contextual icons
                 if (item.notes && item.notes.length > 0) {
@@ -308,17 +374,10 @@
                         const noteText = (typeof note === 'object' && note.type === 'charger') ? note.text : note;
                         const isChargerNote = (typeof note === 'object' && note.type === 'charger');
                         const isLink = typeof noteText === 'string' && (noteText.startsWith('http://') || noteText.startsWith('https://'));
-
-                        let iconClass = 'fas fa-circle-info'; // Default note icon
-                        let liClass = 'list-item'; // Use generic class
-
-                        // Determine icon based on note type or content
-                        if (isChargerNote) {
-                            iconClass = 'fas fa-charging-station';
-                            liClass += ' charger-info'; // Keep specific class for toggling
-                        } else if (isLink) {
-                            iconClass = 'fas fa-link';
-                        } else if (typeof noteText === 'string') {
+                        let iconClass = 'fas fa-circle-info'; let liClass = 'list-item';
+                        if (isChargerNote) { iconClass = 'fas fa-charging-station'; liClass += ' charger-info'; }
+                        else if (isLink) { iconClass = 'fas fa-link'; }
+                        else if (typeof noteText === 'string') {
                             const lowerNote = noteText.toLowerCase();
                             if (lowerNote.includes('drive to') || lowerNote.includes('depart')) { iconClass = 'fas fa-route'; }
                             else if (lowerNote.includes('book') || lowerNote.includes('lotr')) { iconClass = 'fas fa-book'; }
@@ -328,17 +387,10 @@
                             else if (lowerNote.includes('trail condition')) { iconClass = 'fas fa-triangle-exclamation'; }
                             else if (lowerNote.includes('find activity') || lowerNote.includes('remember')) { iconClass = 'fas fa-lightbulb'; }
                         }
-
                         const displayStyle = isChargerNote && !chargerInfoVisible ? 'style="display: none;"' : '';
-                        detailsHtml += `<li class="${liClass}" ${displayStyle}>`;
-                        // Add 'note-icon' class specifically for notes icons styling
-                        detailsHtml += `<i class="${iconClass} list-icon note-icon"></i>`;
-                        detailsHtml += `<span class="flex-1">`;
-                        if (isLink) {
-                            detailsHtml += `<a href="${noteText}" target="_blank" rel="noopener noreferrer" class="note-link">${noteText}</a>`;
-                        } else {
-                            detailsHtml += noteText;
-                        }
+                        detailsHtml += `<li class="${liClass}" ${displayStyle}><i class="${iconClass} list-icon note-icon"></i><span class="flex-1">`;
+                        if (isLink) { detailsHtml += `<a href="${noteText}" target="_blank" rel="noopener noreferrer" class="note-link">${noteText}</a>`; }
+                        else { detailsHtml += noteText; }
                         detailsHtml += `</span></li>`;
                     });
                     detailsHtml += '</ul>';
