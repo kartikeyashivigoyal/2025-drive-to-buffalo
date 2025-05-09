@@ -79,6 +79,8 @@
         .list-icon.note-icon.fa-triangle-exclamation { color: #f97316; } /* orange-500 */
         .list-icon.note-icon.fa-circle-info { color: #0ea5e9; } /* sky-500 */
         .list-icon.note-icon.fa-lightbulb { color: #eab308; } /* yellow-500 */
+        .list-icon.note-icon.fa-sun { color: #f59e0b; } /* amber-500 */
+        .list-icon.note-icon.fa-exclamation-circle { color: #f97316; } /* orange-500 */
         /* Specific Activity icon colors */
         .list-icon.activity-icon.fa-person-hiking { color: #22c55e; } /* green-500 */
         .list-icon.activity-icon.fa-mug-saucer { color: #a16207; } /* yellow-700 */
@@ -92,6 +94,20 @@
         .list-icon.activity-icon.fa-map-marker-alt { color: #f43f5e; } /* rose-500 */
         .list-icon.activity-icon.fa-plane-departure { color: #0ea5e9; } /* sky-500 */
         .list-icon.activity-icon.fa-tasks { color: #6b7280; } /* gray-500 */
+        .list-icon.activity-icon.fa-utensils { color: #f59e0b; } /* amber-500 */
+        .list-icon.activity-icon.fa-wine-glass { color: #a855f7; } /* purple-500 */
+        .list-icon.activity-icon.fa-coffee { color: #854d0e; } /* brown-700 */
+        .list-icon.activity-icon.fa-person-walking { color: #22c55e; } /* green-500 */
+        .list-icon.activity-icon.fa-house-chimney-user { color: #1f2937; } /* gray-800 */
+        .list-icon.activity-icon.fa-water { color: #0ea5e9; } /* sky-500 - for Niagara Falls */
+        .list-icon.activity-icon.fa-globe-americas { color: #10b981; } /* green-500 - for border crossing */
+        .list-icon.activity-icon.fa-camera-retro { color: #ec4899; } /* pink-500 - for viewpoint */
+        .list-icon.activity-icon.fa-tree-city { color: #14b8a6; } /* teal-500 - for town visit */
+        .list-icon.activity-icon.fa-bread-slice { color: #f59e0b; } /* amber-500 - for snack/bakery */
+        .list-icon.activity-icon.fa-beer-mug-empty { color: #a16207; } /* yellow-700 - for brewery */
+        /* Sunrise/Sunset Icons */
+        .list-icon.sun-icon.fa-sunrise { color: #f59e0b; } /* amber-500 */
+        .list-icon.sun-icon.fa-sunset { color: #f97316; } /* orange-500 */
 
 
         /* Style for charger info - initially hidden */
@@ -110,7 +126,7 @@
         .toggle-button.active { background-color: #6b7280; }
         .toggle-button.active:hover { background-color: #4b5563; }
 
-        /* **NEW**: Styles for Summary Widget */
+        /* Styles for Summary Widget */
         .summary-widget {
             background-color: white;
             border-radius: 0.5rem; /* rounded-lg */
@@ -199,30 +215,35 @@
     </div>
 
     <script>
-        // Structured itinerary data
+        // Structured itinerary data with sunrise/sunset times
         const itineraryData = [
              {
                 day: "Wednesday", date: "18/06/2025", startLocation: "Home", destination: "Baker City, OR", driveTime: 5, miles: 310,
-                notes: [ "Drive to Baker City after 12 PM", { type: 'charger', text: "Tesla Route (approx): Home --(~20mi)--> Troutdale --(~70mi)--> The Dalles --(~125mi)--> Pendleton --(~100mi)--> Baker City" } ],
-                activities: []
+                sunrise: "5:20 AM", sunset: "8:51 PM", // Added times
+                notes: [ "Dog-friendly dinner options in Baker City: Paizano's Pizza (patio), Barley Brown's Brewpub (outdoor)", { type: 'charger', text: "Tesla Route (approx): Home --(~20mi)--> Troutdale --(~70mi)--> The Dalles --(~125mi)--> Pendleton --(~100mi)--> Baker City" } ],
+                activities: [ "7:00 AM: Depart Home --> Drive (~1.5 hrs)", "8:30 AM - 10:30 AM: Hike Rowena Plateau / Tom McCall Point Trail (near Mosier)", "10:30 AM - 11:00 AM: Drive to Marchesi Vineyard (~30 mins)", "11:00 AM - 12:30 PM: Lunch at Marchesi Vineyard", "12:30 PM: Depart Marchesi Vineyard --> Drive (~1.5-2 hrs)", "~2:30 PM - 3:30 PM: Pendleton Break (Coffee at Sisters Cafe & Dog walk on River Parkway ~2.5 miles)", "3:30 PM: Depart Pendleton --> Drive (~1 hr)", "~4:30 PM: Arrive Baker City" ]
             },
             {
                 day: "Thursday", date: "19/06/2025", startLocation: "Baker City, OR", destination: "Sun Valley, ID", driveTime: 4.5, miles: 280,
+                sunrise: "5:55 AM", sunset: "9:18 PM", // Added times
                 notes: [ "Find activity on drive.", "Boise is ~2 hrs away.", { type: 'charger', text: "Tesla Route (approx): Baker City --(~130mi)--> Boise --(~130mi)--> Twin Falls --(~85mi)--> Sun Valley (Destination Chargers)" } ],
                 activities: [ "7AM - 8AM: Breakfast", "8AM - 8:30AM: Drive to trail head (30 mins drive from Baker City)", "8:30AM - 1PM: Hike Rock Creek Trail (7 miles, 2200ft, 4hrs)", "1PM - 6PM: Drive back to Sun Valley, ID" ]
             },
             {
                 day: "Friday", date: "20/06/2025", startLocation: "Sun Valley, ID", destination: "Salt Lake City, UT", driveTime: 4.5, miles: 295,
+                sunrise: "5:56 AM", sunset: "9:02 PM", // Added times
                 notes: [ "Remember leashes may be required near trailheads/parking areas.", "Dog-friendly info source: https://visitsunvalley.com/things-to-do/dog-friendly/", { type: 'charger', text: "Tesla Route (approx): Sun Valley --(~85mi)--> Twin Falls --(~120mi)--> Tremonton, UT --(~85mi)--> Salt Lake City" } ],
                 activities: [ "Hike a dog-friendly trail (all trails welcome dogs)", "Visit a dog beach at Redfish, Alturas, or Pettit Lake", "Let dogs swim in Hulen Pond or Big Wood River (off bike path)", "Relax at dog-friendly Galena Lodge after activities" ]
             },
             {
                 day: "Saturday", date: "21/06/2025", startLocation: "Salt Lake City, UT", destination: "Steamboat Springs, CO", driveTime: 6, miles: 333,
+                sunrise: "5:37 AM", sunset: "8:43 PM", // Added times
                 notes: [ "Check trail conditions upon arrival in Steamboat.", { type: 'charger', text: "Tesla Route (approx): SLC --(~160mi)--> Rawlins, WY --(~110mi)--> Laramie, WY --(~120mi)--> Steamboat Springs (Destination Chargers)" } ],
                 activities: [ "Morning: Depart Salt Lake City", "Afternoon/Evening: Drive to Steamboat Springs & Settle in" ]
             },
             {
                 day: "Sunday", date: "22/06/2025", startLocation: "Steamboat Springs, CO", destination: "Omaha, NE", driveTime: 10, miles: 668,
+                sunrise: "5:51 AM", sunset: "9:00 PM", // Added times
                 notes: [ "Need 2-3 Books, maybe LOTR.", "Find stops every 2-hrs to let the dogs out.", { type: 'charger', text: "Tesla Route (approx): Steamboat --(~120mi)--> Laramie, WY --(~140mi)--> Cheyenne, WY --(~100mi)--> North Platte, NE --(~140mi)--> Kearney, NE --(~130mi)--> Lincoln, NE --(~60mi)--> Omaha" } ],
                 activities: [
                     { type: 'section', title: 'Morning Hike Options:'},
@@ -235,14 +256,20 @@
             },
             {
                 day: "Monday", date: "23/06/2025", startLocation: "Omaha, NE", destination: "Chicago, IL", driveTime: 7, miles: 468,
+                sunrise: "5:16 AM", sunset: "8:29 PM", // Added times
                 notes: [ "Stay with Anisha and Nav", { type: 'charger', text: "Tesla Route (approx): Omaha --(~130mi)--> Des Moines, IA --(~115mi)--> Coralville, IA --(~60mi)--> Davenport, IA --(~160mi)--> Chicago Area" } ],
                 activities: ["Morning: Driving", "Afternoon: Arrive in Chicago", "Evening: TBD"]
             },
-            { day: "Tuesday", date: "24/06/2025", startLocation: "Chicago, IL", destination: "Chicago, IL", driveTime: 0, miles: 0, notes: ["Stay with Anisha and Nav"], activities: ["Morning: TBD", "Afternoon: TBD", "Evening: TBD"] },
+            {
+                day: "Tuesday", date: "24/06/2025", startLocation: "Chicago, IL", destination: "Chicago, IL", driveTime: 0, miles: 0,
+                sunrise: "5:16 AM", sunset: "8:29 PM", // Added times
+                notes: ["Stay with Anisha and Nav"], activities: ["Morning: TBD", "Afternoon: TBD", "Evening: TBD"]
+            },
             {
                 day: "Wednesday", date: "25/06/2025", startLocation: "Chicago, IL", destination: "Buffalo, NY", driveTime: 8, miles: 533,
-                notes: [ "Drive via Canada (check border crossing requirements)", { type: 'charger', text: "Tesla Route (approx): Chicago --(~150mi)--> Kalamazoo, MI --(~120mi)--> Detroit/Windsor, ON --(~120mi)--> London, ON --(~70mi)--> Woodstock, ON --(~50mi)--> Hamilton, ON --(~70mi)--> Buffalo" } ],
-                activities: ["Morning: Driving", "Afternoon: Arrive in Buffalo", "Evening: TBD"]
+                sunrise: "5:38 AM", sunset: "8:58 PM", // Added times
+                notes: [ "Drive via Canada (check border crossing requirements - Passport!)", { type: 'charger', text: "Tesla Route (approx): Chicago --(~150mi)--> Kalamazoo, MI --(~120mi)--> Detroit/Windsor, ON --(~120mi)--> London, ON --(~70mi)--> Woodstock, ON --(~50mi)--> Hamilton, ON --(~70mi)--> Buffalo" }, "Allow ample time for border crossings (~1 hr each way).", "Very long day (~8-9 hrs driving + ~5-6 hrs stops). Call ahead to confirm patio policies." ],
+                activities: [ "7:00 AM: Depart Chicago --> Drive (~2.5 hrs)", "~9:30 AM - 10:00 AM: Coffee Stop in Kalamazoo, MI (e.g., Water Street Coffee)", "10:00 AM: Drive Kalamazoo to Detroit/Windsor (~2 hrs)", "~12:00 PM: Arrive Detroit/Windsor border", "~12:00 PM - 1:00 PM: Cross border into Canada (Windsor, ON)", "1:00 PM - 2:00 PM: Lunch at The Bistro at the River (Windsor Riverfront)", "2:00 PM: Drive towards Niagara-on-the-Lake (~3 hrs)", "~5:00 PM - 6:00 PM: Snack/Stroll in Niagara-on-the-Lake (Grab pastry/coffee, walk near park/waterfront)", "~6:00 PM - 6:30 PM: Drive to Niagara Falls", "~6:30 PM - 8:00 PM: Dinner at Niagara Brewing Company (patio)", "~8:00 PM: View Niagara Falls", "~8:30 PM: Depart Niagara Falls --> Drive to Buffalo (~0.5-1 hr + border crossing)", "~10:00 PM - 10:30 PM: Arrive Buffalo" ]
             }
         ];
 
@@ -250,7 +277,7 @@
         const toggleButton = document.getElementById('toggle-charger-button');
         let chargerInfoVisible = false;
 
-        // **NEW**: Calculate Totals
+        // Calculate Totals
         let totalMiles = 0;
         let totalHours = 0;
         let totalActivities = 0;
@@ -261,7 +288,6 @@
             totalHours += item.driveTime || 0;
             if (item.activities) {
                 item.activities.forEach(activity => {
-                    // Count only actual activities (strings or hike objects), not section titles
                     if (typeof activity === 'string' || (typeof activity === 'object' && activity.type === 'hike')) {
                         totalActivities++;
                     }
@@ -269,8 +295,8 @@
             }
         });
 
-        // **NEW**: Update Summary Widget
-        document.getElementById('total-miles').textContent = totalMiles.toLocaleString(); // Add comma for thousands
+        // Update Summary Widget
+        document.getElementById('total-miles').textContent = totalMiles.toLocaleString();
         document.getElementById('total-hours').textContent = totalHours.toLocaleString();
         document.getElementById('total-days').textContent = totalDays;
         document.getElementById('total-activities').textContent = totalActivities;
@@ -290,7 +316,7 @@
 
                 // --- Card Header ---
                 const header = document.createElement('div');
-                header.className = 'p-4 md:p-6 flex justify-between items-center';
+                header.className = 'p-4 md:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center'; // Stack on small screens
                 const headerLeft = document.createElement('div');
                 let locationText = (item.startLocation && item.startLocation !== item.destination)
                     ? `From: <span class="font-medium">${item.startLocation}</span> To: <span class="font-medium">${item.destination}</span>`
@@ -298,16 +324,39 @@
                 headerLeft.innerHTML = `
                     <h2 class="text-xl md:text-2xl font-semibold text-indigo-700">${item.day}, ${item.date}</h2>
                     <p class="text-lg text-gray-600">${locationText}</p>`;
+
+                // **MODIFIED**: Right side layout for better spacing
                 const headerRight = document.createElement('div');
-                headerRight.className = 'flex items-center space-x-4 text-gray-500 text-sm md:text-base';
+                // Use flex-wrap and justify-end on small screens, space-x on larger
+                headerRight.className = 'flex flex-wrap justify-start sm:justify-end items-center gap-x-3 gap-y-1 mt-2 sm:mt-0 text-gray-500 text-sm md:text-base w-full sm:w-auto';
+
+                // Add Sunrise/Sunset
+                 if (item.sunrise && item.sunset) {
+                     headerRight.innerHTML += `
+                        <span title="Sunrise" class="whitespace-nowrap"><i class="fas fa-sunrise list-icon sun-icon mr-1"></i>${item.sunrise}</span>
+                        <span title="Sunset" class="whitespace-nowrap"><i class="fas fa-sunset list-icon sun-icon mr-1"></i>${item.sunset}</span>
+                     `;
+                 }
+
+                // Add Drive Time/Miles or Rest Day
                 if (item.driveTime > 0 || item.miles > 0) {
-                     headerRight.innerHTML += `<span title="Drive Time"><i class="fas fa-clock mr-1"></i> ${item.driveTime} hrs</span> <span title="Distance"><i class="fas fa-road mr-1"></i> ${item.miles} mi</span>`;
+                     headerRight.innerHTML += `
+                        <span title="Drive Time" class="whitespace-nowrap"><i class="fas fa-clock mr-1"></i> ${item.driveTime} hrs</span>
+                        <span title="Distance" class="whitespace-nowrap"><i class="fas fa-road mr-1"></i> ${item.miles} mi</span>
+                     `;
                 } else {
-                     headerRight.innerHTML += `<span title="No driving"><i class="fas fa-bed mr-1"></i> Rest Day</span>`;
+                     headerRight.innerHTML += `<span title="No driving" class="whitespace-nowrap"><i class="fas fa-bed mr-1"></i> Rest Day</span>`;
                 }
+
+                // Add Chevron icon (place it consistently)
+                const chevronContainer = document.createElement('div');
+                chevronContainer.className = 'ml-auto sm:ml-2'; // Push to right on small, add margin on large
                 const chevronIcon = document.createElement('i');
-                chevronIcon.className = 'fas fa-chevron-down chevron-icon ml-2 text-indigo-500';
-                headerRight.appendChild(chevronIcon);
+                chevronIcon.className = 'fas fa-chevron-down chevron-icon text-indigo-500 text-lg'; // Slightly larger icon
+                chevronContainer.appendChild(chevronIcon);
+                headerRight.appendChild(chevronContainer);
+
+
                 header.appendChild(headerLeft);
                 header.appendChild(headerRight);
 
@@ -346,16 +395,28 @@
                                  detailsHtml += `<h3 class="text-md details-section-title pt-4 border-t-0">Activities:</h3>`; isFirstActivitySection = false;
                              }
                              let iconClass = 'fas fa-tasks'; const lowerActivity = activity.toLowerCase();
-                             if (lowerActivity.includes('hike') || lowerActivity.includes('trail')) { iconClass = 'fas fa-person-hiking'; }
+                             if (lowerActivity.includes('depart home')) { iconClass = 'fas fa-house-chimney-user'; }
+                             else if (lowerActivity.includes('depart marchesi') || lowerActivity.includes('depart steamboat') || lowerActivity.includes('depart pendleton') || lowerActivity.includes('depart salt lake') || lowerActivity.includes('depart chicago') || lowerActivity.includes('depart niagara falls') || lowerActivity.includes('depart bistro')) { iconClass = 'fas fa-car-side'; }
+                             else if (lowerActivity.includes('drive to trail head') || lowerActivity.includes('drive back') || lowerActivity.includes('drive (~') || lowerActivity.includes('drive chicago to') || lowerActivity.includes('drive windsor to') || lowerActivity.includes('drive to buffalo') || lowerActivity.includes('drive towards niagara') || lowerActivity.includes('drive kalamazoo to')) { iconClass = 'fas fa-route'; }
+                             else if (lowerActivity.includes('hike') || lowerActivity.includes('trail')) { iconClass = 'fas fa-person-hiking'; }
                              else if (lowerActivity.includes('breakfast')) { iconClass = 'fas fa-mug-saucer'; }
-                             else if (lowerActivity.includes('drive') || lowerActivity.includes('driving')) { iconClass = 'fas fa-car'; }
-                             else if (lowerActivity.includes('visit') || lowerActivity.includes('lodge') || lowerActivity.includes('relax')) { iconClass = 'fas fa-map-marker-alt'; }
+                             else if (lowerActivity.includes('lunch')) { iconClass = 'fas fa-utensils'; }
+                             else if (lowerActivity.includes('dinner')) { iconClass = 'fas fa-utensils'; }
+                             else if (lowerActivity.includes('vineyard')) { iconClass = 'fas fa-wine-glass'; }
+                             else if (lowerActivity.includes('visit') || lowerActivity.includes('lodge') || lowerActivity.includes('relax') || lowerActivity.includes('niagara-on-the-lake') || lowerActivity.includes('view niagara falls')) { iconClass = 'fas fa-map-marker-alt'; }
                              else if (lowerActivity.includes('beach')) { iconClass = 'fas fa-umbrella-beach'; }
                              else if (lowerActivity.includes('swim')) { iconClass = 'fas fa-person-swimming'; }
-                             else if (lowerActivity.includes('depart')) { iconClass = 'fas fa-plane-departure'; }
-                             else if (lowerActivity.includes('arrive')) { iconClass = 'fas fa-flag-checkered'; }
+                             else if (lowerActivity.includes('arrive baker city') || lowerActivity.includes('arrive chicago') || lowerActivity.includes('arrive buffalo') || lowerActivity.includes('arrive pendleton') || lowerActivity.includes('arrive marchesi') || lowerActivity.includes('arrive detroit/windsor') || lowerActivity.includes('arrive niagara falls')) { iconClass = 'fas fa-flag-checkered'; }
                              else if (lowerActivity.includes('settle in')) { iconClass = 'fas fa-bed'; }
                              else if (lowerActivity.includes('tbd')) { iconClass = 'fas fa-question-circle'; }
+                             else if (lowerActivity.includes('coffee') || lowerActivity.includes('cafe')) { iconClass = 'fas fa-coffee'; }
+                             else if (lowerActivity.includes('walk') || lowerActivity.includes('riverwalk') || lowerActivity.includes('parkway') || lowerActivity.includes('windsor riverfront') || lowerActivity.includes('stroll')) { iconClass = 'fas fa-person-walking'; }
+                             else if (lowerActivity.includes('niagara falls')) { iconClass = 'fas fa-water'; }
+                             else if (lowerActivity.includes('cross border')) { iconClass = 'fas fa-globe-americas'; }
+                             else if (lowerActivity.includes('snack') || lowerActivity.includes('pastry')) { iconClass = 'fas fa-bread-slice'; }
+                             else if (lowerActivity.includes('brewery')) { iconClass = 'fas fa-beer-mug-empty'; }
+
+
                              activityListHtml += `<li class="list-item"><i class="${iconClass} list-icon activity-icon"></i><span class="flex-1">${activity}</span></li>`;
                          }
                      });
@@ -379,13 +440,15 @@
                         else if (isLink) { iconClass = 'fas fa-link'; }
                         else if (typeof noteText === 'string') {
                             const lowerNote = noteText.toLowerCase();
-                            if (lowerNote.includes('drive to') || lowerNote.includes('depart')) { iconClass = 'fas fa-route'; }
+                            if (lowerNote.includes('sunset')) { iconClass = 'fas fa-sun'; }
+                            else if (lowerNote.includes('drive to') || lowerNote.includes('depart')) { iconClass = 'fas fa-route'; }
                             else if (lowerNote.includes('book') || lowerNote.includes('lotr')) { iconClass = 'fas fa-book'; }
-                            else if (lowerNote.includes('dog') || lowerNote.includes('leash')) { iconClass = 'fas fa-dog'; }
+                            else if (lowerNote.includes('dog') || lowerNote.includes('leash') || lowerNote.includes('dog-friendly')) { iconClass = 'fas fa-dog'; }
                             else if (lowerNote.includes('stay with')) { iconClass = 'fas fa-house-user'; }
                             else if (lowerNote.includes('canada') || lowerNote.includes('border crossing')) { iconClass = 'fas fa-passport'; }
                             else if (lowerNote.includes('trail condition')) { iconClass = 'fas fa-triangle-exclamation'; }
                             else if (lowerNote.includes('find activity') || lowerNote.includes('remember')) { iconClass = 'fas fa-lightbulb'; }
+                            else if (lowerNote.includes('long day') || lowerNote.includes('long driving day')) { iconClass = 'fas fa-exclamation-circle'; }
                         }
                         const displayStyle = isChargerNote && !chargerInfoVisible ? 'style="display: none;"' : '';
                         detailsHtml += `<li class="${liClass}" ${displayStyle}><i class="${iconClass} list-icon note-icon"></i><span class="flex-1">`;
