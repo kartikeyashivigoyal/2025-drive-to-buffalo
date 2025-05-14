@@ -69,6 +69,7 @@
             color: #6b7280; /* Default icon color: gray-500 */
         }
         /* Specific Note icon colors */
+        .list-icon.note-icon.fa-gas-pump { color: #f59e0b; } /* amber-500 for gas */
         .list-icon.note-icon.fa-charging-station { color: #3b82f6; } /* blue-500 */
         .list-icon.note-icon.fa-link { color: #6366f1; } /* indigo-500 */
         .list-icon.note-icon.fa-car, .list-icon.note-icon.fa-route { color: #1f2937; } /* gray-800 */
@@ -105,9 +106,16 @@
         .list-icon.activity-icon.fa-tree-city { color: #14b8a6; } /* teal-500 - for town visit */
         .list-icon.activity-icon.fa-bread-slice { color: #f59e0b; } /* amber-500 - for snack/bakery */
         .list-icon.activity-icon.fa-beer-mug-empty { color: #a16207; } /* yellow-700 - for brewery */
-        /* Sunrise/Sunset Icons */
+        .list-icon.activity-icon.fa-mountain-sun { color: #f97316; } /* orange-500 for Galena/Sawtooths */
+        .list-icon.activity-icon.fa-fish { color: #3b82f6; } /* blue-500 for lakes */
+        .list-icon.activity-icon.fa-gas-pump { color: #f59e0b; } /* amber-500 for gas stop */
+        .list-icon.activity-icon.fa-paw { color: #854d0e; } /* brown for dog relief */
+        .list-icon.activity-icon.fa-water-lower { color: #3b82f6; } /* for Great Salt Lake */
+        /* Sunrise/Sunset & Weather Icons */
         .list-icon.sun-icon.fa-sunrise { color: #f59e0b; } /* amber-500 */
         .list-icon.sun-icon.fa-sunset { color: #f97316; } /* orange-500 */
+        .list-icon.weather-icon.fa-sun { color: #facc15; } /* yellow-400 */
+        .list-icon.weather-icon.fa-cloud-sun { color: #38bdf8; } /* sky-400 */
 
 
         /* Style for charger info - initially hidden */
@@ -219,57 +227,146 @@
         const itineraryData = [
              {
                 day: "Wednesday", date: "18/06/2025", startLocation: "Home", destination: "Baker City, OR", driveTime: 5, miles: 310,
-                sunrise: "5:20 AM", sunset: "8:51 PM", // Added times
-                notes: [ "Dog-friendly dinner options in Baker City: Paizano's Pizza (patio), Barley Brown's Brewpub (outdoor)", { type: 'charger', text: "Tesla Route (approx): Home --(~20mi)--> Troutdale --(~70mi)--> The Dalles --(~125mi)--> Pendleton --(~100mi)--> Baker City" } ],
-                activities: [ "7:00 AM: Depart Home --> Drive (~1.5 hrs)", "8:30 AM - 10:30 AM: Hike Rowena Plateau / Tom McCall Point Trail (near Mosier)", "10:30 AM - 11:00 AM: Drive to Marchesi Vineyard (~30 mins)", "11:00 AM - 12:30 PM: Lunch at Marchesi Vineyard", "12:30 PM: Depart Marchesi Vineyard --> Drive (~1.5-2 hrs)", "~2:30 PM - 3:30 PM: Pendleton Break (Coffee at Sisters Cafe & Dog walk on River Parkway ~2.5 miles)", "3:30 PM: Depart Pendleton --> Drive (~1 hr)", "~4:30 PM: Arrive Baker City" ]
+                sunrise: "5:20 AM", sunset: "8:51 PM", weather: "Likely Sunny, Warm", weatherIcon: "fas fa-sun",
+                notes: [
+                    "Target arrival in Baker City by ~8:30 PM (sunset 8:51 PM).",
+                    { type: 'charger', text: "Tesla Route (approx): Home --(~20mi)--> Troutdale --(~70mi)--> The Dalles --(~125mi)--> Pendleton --(~100mi)--> Baker City" },
+                    "Dog-friendly dinner options in Baker City: Paizano's Pizza (patio), Barley Brown's Brewpub (outdoor)",
+                    "Refuel in Baker City upon arrival or in the morning."
+                ],
+                activities: [
+                    "Breakfast at/near Home",
+                    "12:00 PM: Depart Home --> Drive to Mosier (~1.5 hrs)",
+                    "~1:30 PM - 3:30 PM: Hike Mosier Plateau Trail (~3-3.5 miles, dog-friendly)",
+                    "~3:30 PM - 3:45 PM: Drive to Marchesi Vineyard (~15 mins)",
+                    "~3:45 PM - 5:00 PM: Late Lunch/Snack at Marchesi Vineyard (Hood River)",
+                    "5:00 PM: Depart Marchesi Vineyard --> Drive to Pendleton (~1.5-2 hrs)",
+                    "~6:30 PM - 7:15 PM: Pendleton Break (Refuel, Coffee at Sisters Cafe & Dog walk on River Parkway ~2.5 miles)",
+                    "7:15 PM: Depart Pendleton --> Drive (~1.5 hr)",
+                    "~8:45 PM: Arrive Baker City"
+                ]
             },
             {
                 day: "Thursday", date: "19/06/2025", startLocation: "Baker City, OR", destination: "Sun Valley, ID", driveTime: 4.5, miles: 280,
-                sunrise: "5:55 AM", sunset: "9:18 PM", // Added times
-                notes: [ "Find activity on drive.", "Boise is ~2 hrs away.", { type: 'charger', text: "Tesla Route (approx): Baker City --(~130mi)--> Boise --(~130mi)--> Twin Falls --(~85mi)--> Sun Valley (Destination Chargers)" } ],
-                activities: [ "7AM - 8AM: Breakfast", "8AM - 8:30AM: Drive to trail head (30 mins drive from Baker City)", "8:30AM - 1PM: Hike Rock Creek Trail (7 miles, 2200ft, 4hrs)", "1PM - 6PM: Drive back to Sun Valley, ID" ]
+                sunrise: "5:55 AM", sunset: "9:18 PM", weather: "Likely Sunny, Pleasant", weatherIcon: "fas fa-sun",
+                notes: [
+                    "Dog-friendly lunch in Boise Basque Block: Bar Gernika (patio). Check Leku Ona or Basque Market patio policy.",
+                    "Good sunset spots in Sun Valley/Ketchum: Galena Summit Overlook (drive), Knob Hill (hike).",
+                    "Dog-friendly dinner in Ketchum: Sawtooth Brewery, Grumpy's, Lefty's (check patios). Call ahead!",
+                    { type: 'charger', text: "Tesla Route (approx): Baker City --(~130mi)--> Boise --(~130mi)--> Twin Falls --(~85mi)--> Sun Valley (Destination Chargers)" },
+                    "Refuel in Sun Valley upon arrival or in the morning."
+                ],
+                activities: [
+                    "Morning: Breakfast in Baker City & Depart for Sun Valley (~9:00 AM)",
+                    "Drive Baker City to Boise (~2 hrs)",
+                    "~11:00 AM - 1:30 PM: Boise Stop: Lunch in Basque Block & Walk on Boise River Greenbelt",
+                    "1:30 PM: Depart Boise --> Drive to Sun Valley (~2.5 hrs)",
+                    "~4:00 PM: Arrive Sun Valley, Check-in, Relax",
+                    "Evening: Stroll through downtown Ketchum or walk dogs on Wood River Trail. Dinner at a dog-friendly patio."
+                ]
             },
             {
-                day: "Friday", date: "20/06/2025", startLocation: "Sun Valley, ID", destination: "Salt Lake City, UT", driveTime: 4.5, miles: 295,
-                sunrise: "5:56 AM", sunset: "9:02 PM", // Added times
-                notes: [ "Remember leashes may be required near trailheads/parking areas.", "Dog-friendly info source: https://visitsunvalley.com/things-to-do/dog-friendly/", { type: 'charger', text: "Tesla Route (approx): Sun Valley --(~85mi)--> Twin Falls --(~120mi)--> Tremonton, UT --(~85mi)--> Salt Lake City" } ],
-                activities: [ "Hike a dog-friendly trail (all trails welcome dogs)", "Visit a dog beach at Redfish, Alturas, or Pettit Lake", "Let dogs swim in Hulen Pond or Big Wood River (off bike path)", "Relax at dog-friendly Galena Lodge after activities" ]
+                day: "Friday", date: "20/06/2025", startLocation: "Sun Valley, ID", destination: "Ogden, UT", driveTime: 5, miles: 330, // Adjusted miles & time for Ogden
+                sunrise: "5:57 AM", sunset: "9:03 PM", weather: "Likely Sunny, Warm", weatherIcon: "fas fa-sun", // Ogden times
+                notes: [
+                    "This is an EXTREMELY packed day with significant driving. Consider reducing lake visits or shifting some to another day if possible.",
+                    "Remember leashes may be required near trailheads/parking areas.",
+                    "Dog-friendly dinner Ogden: Slackwater Pizzeria, Ogden Beer Co. (check patios).",
+                    { type: 'charger', text: "Tesla Route (approx): Sun Valley --(~85mi)--> Twin Falls --(~120mi)--> Tremonton, UT --(~45mi)--> Ogden" }, // Updated for Ogden
+                    "Refuel in Ogden upon arrival or in the morning.",
+                    "Break options Galena Lodge to Ogden: Shoshone, Twin Falls (more amenities)."
+                ],
+                activities: [
+                    "~7:30 AM: Depart Sun Valley for Sawtooth Lakes area.",
+                    "~8:30 AM - 9:30 AM: Visit Redfish Lake & walk dogs.",
+                    "~9:30 AM - 10:00 AM: Drive to Alturas Lake.",
+                    "~10:00 AM - 10:45 AM: Visit Alturas Lake.",
+                    "~10:45 AM - 11:05 AM: Drive to Pettit Lake.",
+                    "~11:05 AM - 11:45 AM: Visit Pettit Lake.",
+                    "~11:45 AM - 12:30 PM: Drive to Galena Lodge area.",
+                    "~12:30 PM - 2:30 PM: Hike near Galena Lodge (e.g., Galena View Loop or Senate Meadows, ~3 miles, dog-friendly)",
+                    "~2:30 PM - 3:30 PM: Lunch at Galena Lodge (dog-friendly deck).",
+                    "~3:30 PM: Depart Galena Lodge for Ogden (~4.5-5 hrs drive).",
+                    "~8:00 PM - 8:30 PM: Arrive Ogden, check-in.",
+                    "Late Evening: Dinner at a dog-friendly patio in Ogden."
+                ]
             },
             {
-                day: "Saturday", date: "21/06/2025", startLocation: "Salt Lake City, UT", destination: "Steamboat Springs, CO", driveTime: 6, miles: 333,
-                sunrise: "5:37 AM", sunset: "8:43 PM", // Added times
-                notes: [ "Check trail conditions upon arrival in Steamboat.", { type: 'charger', text: "Tesla Route (approx): SLC --(~160mi)--> Rawlins, WY --(~110mi)--> Laramie, WY --(~120mi)--> Steamboat Springs (Destination Chargers)" } ],
-                activities: [ "Morning: Depart Salt Lake City", "Afternoon/Evening: Drive to Steamboat Springs & Settle in" ]
+                day: "Saturday", date: "21/06/2025", startLocation: "Ogden, UT", destination: "Steamboat Springs, CO", driveTime: 7, miles: 380, // Adjusted miles & time
+                sunrise: "5:37 AM", sunset: "8:43 PM", weather: "Varied: Lake AM, Mtn PM", weatherIcon: "fas fa-cloud-sun", // Steamboat times
+                notes: [
+                    "Antelope Island: Dogs on leash, not on beaches/Frary Peak. Causeway fee. Bring water!",
+                    "Check trail conditions upon arrival in Steamboat.",
+                    "Dog-friendly dinner Steamboat: Mountain Tap Brewery, Slopeside Grill (check patios).",
+                    { type: 'charger', text: "Tesla Route (approx): Ogden --(~50mi)--> Antelope Island --(~160mi)--> Rawlins, WY --(~110mi)--> Laramie, WY --(~120mi)--> Steamboat Springs" }, // Updated for GSL
+                    "Refuel in Steamboat Springs upon arrival or in the morning."
+                ],
+                activities: [
+                    "~8:00 AM: Breakfast in Ogden.",
+                    "~9:00 AM: Depart Ogden for Antelope Island State Park (~1 hr drive).",
+                    "~10:00 AM - 12:30 PM: Explore Antelope Island (Visitor Center, short trails like Buffalo Point, wildlife viewing).",
+                    "~12:30 PM - 1:30 PM: Picnic Lunch near Great Salt Lake or grab quick bite departing.",
+                    "~1:30 PM: Depart Antelope Island/Ogden area for Rawlins, WY (~2.5-3 hrs).",
+                    "~4:30 PM - 5:00 PM: Refuel & Dog Walk in Rawlins, WY.",
+                    "~5:00 PM: Depart Rawlins --> Drive to Steamboat Springs (~3 hrs).",
+                    "~8:00 PM: Arrive Steamboat Springs & Settle in. Dinner at a dog-friendly patio."
+                ]
             },
             {
                 day: "Sunday", date: "22/06/2025", startLocation: "Steamboat Springs, CO", destination: "Omaha, NE", driveTime: 10, miles: 668,
-                sunrise: "5:51 AM", sunset: "9:00 PM", // Added times
-                notes: [ "Need 2-3 Books, maybe LOTR.", "Find stops every 2-hrs to let the dogs out.", { type: 'charger', text: "Tesla Route (approx): Steamboat --(~120mi)--> Laramie, WY --(~140mi)--> Cheyenne, WY --(~100mi)--> North Platte, NE --(~140mi)--> Kearney, NE --(~130mi)--> Lincoln, NE --(~60mi)--> Omaha" } ],
+                sunrise: "5:37 AM", sunset: "8:41 PM", weather: "Varied: Mtn AM, Plains PM", weatherIcon: "fas fa-cloud-sun",
+                notes: [
+                    "Need 2-3 Books, maybe LOTR.",
+                    "Find stops every 2-hrs to let the dogs out.",
+                    "Omaha arrival will be very late. Dinner/drinks likely for next day.",
+                    "Dog-friendly dinner Omaha (next day): Bärchen Beer Garden (patio).",
+                    "Dog-friendly Omaha parks (next day): Gene Leahy Mall, Chalco Hills.",
+                    { type: 'charger', text: "Tesla Route (approx): Steamboat --(~120mi)--> Laramie, WY --(~140mi)--> Cheyenne, WY --(~100mi)--> North Platte, NE --(~140mi)--> Kearney, NE --(~130mi)--> Lincoln, NE --(~60mi)--> Omaha" },
+                    "Refuel in Omaha upon arrival or in the morning."
+                ],
                 activities: [
-                    { type: 'section', title: 'Morning Hike Options:'},
-                    { type: 'hike', name: 'Fish Creek Falls Trail (Lower Overlook)', distance: '0.5 miles RT', elevationGain: '~160 ft', imagePlaceholder: 'https://placehold.co/80x80/a7f3d0/1f2937?text=Falls', dogFriendly: true, notes: 'Paved, accessible trail to main overlook.' },
-                    { type: 'hike', name: 'Emerald Mountain Quarry Trail', distance: '~4 miles RT', elevationGain: '~950 ft', imagePlaceholder: 'https://placehold.co/80x80/bae6fd/1f2937?text=View', dogFriendly: true, notes: 'Great views of town and the ski area.' },
-                    { type: 'hike', name: 'Spring Creek Trail', distance: 'Variable (up to 5+ miles one way)', elevationGain: 'Minimal/Gradual', imagePlaceholder: 'https://placehold.co/80x80/fecaca/1f2937?text=Creek', dogFriendly: true, notes: 'Easy, mostly flat trail starting near town.' },
-                    { type: 'section', title: 'Afternoon/Evening:'},
-                    "Depart Steamboat & Drive to Omaha"
+                    "~7:30 AM - 8:30 AM: Breakfast/Coffee in Steamboat (e.g., Creekside Cafe or Dusky Grouse Coffee - check patio)",
+                    "~8:30 AM - 10:30 AM: Hike Spring Creek Trail (dog-friendly, adjust length as needed)",
+                    "~11:00 AM MDT: Depart Steamboat Springs",
+                    "~1:00 PM MDT: Arrive Laramie, WY. Lunch at Turtle Rock Coffee & Cafe (patio) & Dog Walk at Laramie River Greenbelt (~1.5 hrs)",
+                    "~2:30 PM MDT: Depart Laramie",
+                    "~3:30 PM MDT: Arrive Cheyenne, WY. Coffee & Short Dog Walk/Sightsee Capitol Grounds (~1 hr)",
+                    "~4:30 PM MDT (5:30 PM CDT): Depart Cheyenne",
+                    "~8:00 PM - 9:00 PM CDT: Arrive North Platte, NE. Refuel, Quick Dinner/Stretch & Dog Relief (~1 hr)",
+                    "~9:00 PM CDT: Depart North Platte",
+                    "~11:00 PM - 11:30 PM CDT: Arrive Kearney, NE. Quick Stretch & Dog Relief (~20-30 mins)",
+                    "~11:50 PM CDT: Depart Kearney",
+                    "~2:20 AM - 2:50 AM CDT (Mon Jun 23): Arrive in Omaha. Quick dog relief walk near hotel."
                 ]
             },
             {
                 day: "Monday", date: "23/06/2025", startLocation: "Omaha, NE", destination: "Chicago, IL", driveTime: 7, miles: 468,
-                sunrise: "5:16 AM", sunset: "8:29 PM", // Added times
-                notes: [ "Stay with Anisha and Nav", { type: 'charger', text: "Tesla Route (approx): Omaha --(~130mi)--> Des Moines, IA --(~115mi)--> Coralville, IA --(~60mi)--> Davenport, IA --(~160mi)--> Chicago Area" } ],
-                activities: ["Morning: Driving", "Afternoon: Arrive in Chicago", "Evening: TBD"]
+                sunrise: "5:16 AM", sunset: "8:29 PM", weather: "Likely Sunny, Humid", weatherIcon: "fas fa-sun",
+                notes: [
+                    "Stay with Anisha and Nav",
+                    { type: 'charger', text: "Tesla Route (approx): Omaha --(~130mi)--> Des Moines, IA --(~115mi)--> Coralville, IA --(~60mi)--> Davenport, IA --(~160mi)--> Chicago Area" },
+                    "Refuel in Chicago upon arrival or in the morning."
+                ],
+                activities: [
+                    "Morning: Depart Omaha (~8:00 AM)",
+                    "Drive to Des Moines, IA (~2 hrs)",
+                    "~10:00 AM - 10:30 AM: Coffee & Dog Walk in Des Moines",
+                    "10:30 AM: Drive to Davenport, IA (~2.5 hrs)",
+                    "~1:00 PM - 2:00 PM: Lunch & Refuel in Davenport. Dog walk.",
+                    "2:00 PM: Depart Davenport --> Drive to Chicago (~2.5 - 3 hrs)",
+                    "~4:30 PM - 5:00 PM: Arrive in Chicago"
+                ]
             },
             {
                 day: "Tuesday", date: "24/06/2025", startLocation: "Chicago, IL", destination: "Chicago, IL", driveTime: 0, miles: 0,
-                sunrise: "5:16 AM", sunset: "8:29 PM", // Added times
+                sunrise: "5:16 AM", sunset: "8:29 PM", weather: "Likely Sunny, Humid", weatherIcon: "fas fa-sun",
                 notes: ["Stay with Anisha and Nav"], activities: ["Morning: TBD", "Afternoon: TBD", "Evening: TBD"]
             },
             {
                 day: "Wednesday", date: "25/06/2025", startLocation: "Chicago, IL", destination: "Buffalo, NY", driveTime: 8, miles: 533,
-                sunrise: "5:38 AM", sunset: "8:58 PM", // Added times
+                sunrise: "5:38 AM", sunset: "8:58 PM", weather: "Likely Pleasant, Chance of Showers", weatherIcon: "fas fa-cloud-sun",
                 notes: [ "Drive via Canada (check border crossing requirements - Passport!)", { type: 'charger', text: "Tesla Route (approx): Chicago --(~150mi)--> Kalamazoo, MI --(~120mi)--> Detroit/Windsor, ON --(~120mi)--> London, ON --(~70mi)--> Woodstock, ON --(~50mi)--> Hamilton, ON --(~70mi)--> Buffalo" }, "Allow ample time for border crossings (~1 hr each way).", "Very long day (~8-9 hrs driving + ~5-6 hrs stops). Call ahead to confirm patio policies." ],
-                activities: [ "7:00 AM: Depart Chicago --> Drive (~2.5 hrs)", "~9:30 AM - 10:00 AM: Coffee Stop in Kalamazoo, MI (e.g., Water Street Coffee)", "10:00 AM: Drive Kalamazoo to Detroit/Windsor (~2 hrs)", "~12:00 PM: Arrive Detroit/Windsor border", "~12:00 PM - 1:00 PM: Cross border into Canada (Windsor, ON)", "1:00 PM - 2:00 PM: Lunch at The Bistro at the River (Windsor Riverfront)", "2:00 PM: Drive towards Niagara-on-the-Lake (~3 hrs)", "~5:00 PM - 6:00 PM: Snack/Stroll in Niagara-on-the-Lake (Grab pastry/coffee, walk near park/waterfront)", "~6:00 PM - 6:30 PM: Drive to Niagara Falls", "~6:30 PM - 8:00 PM: Dinner at Niagara Brewing Company (patio)", "~8:00 PM: View Niagara Falls", "~8:30 PM: Depart Niagara Falls --> Drive to Buffalo (~0.5-1 hr + border crossing)", "~10:00 PM - 10:30 PM: Arrive Buffalo" ]
+                activities: [ "7:00 AM: Depart Chicago --> Drive (~2.5 hrs)", "~9:30 AM - 10:00 AM: Coffee Stop in Kalamazoo, MI (e.g., Water Street Coffee)", "10:00 AM: Drive Kalamazoo to Detroit/Windsor (~2 hrs)", "~12:00 PM: Arrive Detroit/Windsor border", "~12:00 PM - 1:00 PM: Cross border into Canada (Windsor, ON)", "1:00 PM - 2:00 PM: Lunch at The Bistro at the River (Windsor Riverfront)", "2:00 PM: Drive to London, ON (~1.5 - 2 hrs)", "~3:30 PM - 4:15 PM: Refuel & Dog Walk in London, ON", "4:15 PM: Drive towards Niagara-on-the-Lake (~1.5 hrs)", "~5:45 PM - 6:45 PM: Snack/Stroll in Niagara-on-the-Lake", "~6:45 PM - 7:15 PM: Drive to Niagara Falls", "~7:15 PM - 8:45 PM: Dinner at Niagara Brewing Company (patio) & View Niagara Falls", "~8:45 PM: Depart Niagara Falls --> Drive to Buffalo (~0.5-1 hr + border crossing)", "~10:15 PM - 11:15 PM: Arrive Buffalo" ]
             }
         ];
 
@@ -316,7 +413,7 @@
 
                 // --- Card Header ---
                 const header = document.createElement('div');
-                header.className = 'p-4 md:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center'; // Stack on small screens
+                header.className = 'p-4 md:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center';
                 const headerLeft = document.createElement('div');
                 let locationText = (item.startLocation && item.startLocation !== item.destination)
                     ? `From: <span class="font-medium">${item.startLocation}</span> To: <span class="font-medium">${item.destination}</span>`
@@ -325,20 +422,22 @@
                     <h2 class="text-xl md:text-2xl font-semibold text-indigo-700">${item.day}, ${item.date}</h2>
                     <p class="text-lg text-gray-600">${locationText}</p>`;
 
-                // **MODIFIED**: Right side layout for better spacing
                 const headerRight = document.createElement('div');
-                // Use flex-wrap and justify-end on small screens, space-x on larger
                 headerRight.className = 'flex flex-wrap justify-start sm:justify-end items-center gap-x-3 gap-y-1 mt-2 sm:mt-0 text-gray-500 text-sm md:text-base w-full sm:w-auto';
 
-                // Add Sunrise/Sunset
                  if (item.sunrise && item.sunset) {
                      headerRight.innerHTML += `
                         <span title="Sunrise" class="whitespace-nowrap"><i class="fas fa-sunrise list-icon sun-icon mr-1"></i>${item.sunrise}</span>
                         <span title="Sunset" class="whitespace-nowrap"><i class="fas fa-sunset list-icon sun-icon mr-1"></i>${item.sunset}</span>
                      `;
                  }
+                 if (item.weather && item.weatherIcon) {
+                    headerRight.innerHTML += `
+                        <span title="Expected Weather" class="whitespace-nowrap"><i class="${item.weatherIcon} list-icon weather-icon mr-1"></i>${item.weather}</span>
+                    `;
+                 }
 
-                // Add Drive Time/Miles or Rest Day
+
                 if (item.driveTime > 0 || item.miles > 0) {
                      headerRight.innerHTML += `
                         <span title="Drive Time" class="whitespace-nowrap"><i class="fas fa-clock mr-1"></i> ${item.driveTime} hrs</span>
@@ -348,11 +447,10 @@
                      headerRight.innerHTML += `<span title="No driving" class="whitespace-nowrap"><i class="fas fa-bed mr-1"></i> Rest Day</span>`;
                 }
 
-                // Add Chevron icon (place it consistently)
                 const chevronContainer = document.createElement('div');
-                chevronContainer.className = 'ml-auto sm:ml-2'; // Push to right on small, add margin on large
+                chevronContainer.className = 'ml-auto sm:ml-2';
                 const chevronIcon = document.createElement('i');
-                chevronIcon.className = 'fas fa-chevron-down chevron-icon text-indigo-500 text-lg'; // Slightly larger icon
+                chevronIcon.className = 'fas fa-chevron-down chevron-icon text-indigo-500 text-lg';
                 chevronContainer.appendChild(chevronIcon);
                 headerRight.appendChild(chevronContainer);
 
@@ -396,25 +494,27 @@
                              }
                              let iconClass = 'fas fa-tasks'; const lowerActivity = activity.toLowerCase();
                              if (lowerActivity.includes('depart home')) { iconClass = 'fas fa-house-chimney-user'; }
-                             else if (lowerActivity.includes('depart marchesi') || lowerActivity.includes('depart steamboat') || lowerActivity.includes('depart pendleton') || lowerActivity.includes('depart salt lake') || lowerActivity.includes('depart chicago') || lowerActivity.includes('depart niagara falls') || lowerActivity.includes('depart bistro')) { iconClass = 'fas fa-car-side'; }
-                             else if (lowerActivity.includes('drive to trail head') || lowerActivity.includes('drive back') || lowerActivity.includes('drive (~') || lowerActivity.includes('drive chicago to') || lowerActivity.includes('drive windsor to') || lowerActivity.includes('drive to buffalo') || lowerActivity.includes('drive towards niagara') || lowerActivity.includes('drive kalamazoo to')) { iconClass = 'fas fa-route'; }
+                             else if (lowerActivity.includes('depart marchesi') || lowerActivity.includes('depart steamboat') || lowerActivity.includes('depart pendleton') || lowerActivity.includes('depart salt lake') || lowerActivity.includes('depart chicago') || lowerActivity.includes('depart niagara falls') || lowerActivity.includes('depart bistro') || lowerActivity.includes('depart boise') || lowerActivity.includes('depart sawtooths') || lowerActivity.includes('depart laramie') || lowerActivity.includes('depart cheyenne') || lowerActivity.includes('depart north platte') || lowerActivity.includes('depart kearney') || lowerActivity.includes('depart london') || lowerActivity.includes('depart ogden') || lowerActivity.includes('depart antelope island')) { iconClass = 'fas fa-car-side'; }
+                             else if (lowerActivity.includes('drive to trail head') || lowerActivity.includes('drive back') || lowerActivity.includes('drive (~') || lowerActivity.includes('drive chicago to') || lowerActivity.includes('drive windsor to') || lowerActivity.includes('drive to buffalo') || lowerActivity.includes('drive towards niagara') || lowerActivity.includes('drive kalamazoo to') || lowerActivity.includes('drive baker city to boise') || lowerActivity.includes('drive boise to sun valley') || lowerActivity.includes('drive galena lodge to redfish') || lowerActivity.includes('drive to alturas lake') || lowerActivity.includes('drive to pettit lake') || lowerActivity.includes('drive to galena lodge') || lowerActivity.includes('drive to marchesi vineyard') || lowerActivity.includes('drive to mosier') || lowerActivity.includes('drive to laramie') || lowerActivity.includes('drive to cheyenne') || lowerActivity.includes('drive to north platte') || lowerActivity.includes('drive to kearney') || lowerActivity.includes('drive to omaha') || lowerActivity.includes('drive to london') || lowerActivity.includes('drive to davenport') || lowerActivity.includes('drive to antelope island') || lowerActivity.includes('drive ogden to rawlins') || lowerActivity.includes('drive to rawlins') || lowerActivity.includes('drive rawlins to steamboat')) { iconClass = 'fas fa-route'; }
                              else if (lowerActivity.includes('hike') || lowerActivity.includes('trail')) { iconClass = 'fas fa-person-hiking'; }
                              else if (lowerActivity.includes('breakfast')) { iconClass = 'fas fa-mug-saucer'; }
                              else if (lowerActivity.includes('lunch')) { iconClass = 'fas fa-utensils'; }
                              else if (lowerActivity.includes('dinner')) { iconClass = 'fas fa-utensils'; }
                              else if (lowerActivity.includes('vineyard')) { iconClass = 'fas fa-wine-glass'; }
-                             else if (lowerActivity.includes('visit') || lowerActivity.includes('lodge') || lowerActivity.includes('relax') || lowerActivity.includes('niagara-on-the-lake') || lowerActivity.includes('view niagara falls')) { iconClass = 'fas fa-map-marker-alt'; }
+                             else if (lowerActivity.includes('visit') || lowerActivity.includes('lodge') || lowerActivity.includes('relax') || lowerActivity.includes('niagara-on-the-lake') || lowerActivity.includes('view niagara falls') || lowerActivity.includes('redfish lake') || lowerActivity.includes('alturas lake') || lowerActivity.includes('pettit lake') || lowerActivity.includes('sightsee') || lowerActivity.includes('explore antelope island')) { iconClass = 'fas fa-map-marker-alt'; }
                              else if (lowerActivity.includes('beach')) { iconClass = 'fas fa-umbrella-beach'; }
                              else if (lowerActivity.includes('swim')) { iconClass = 'fas fa-person-swimming'; }
-                             else if (lowerActivity.includes('arrive baker city') || lowerActivity.includes('arrive chicago') || lowerActivity.includes('arrive buffalo') || lowerActivity.includes('arrive pendleton') || lowerActivity.includes('arrive marchesi') || lowerActivity.includes('arrive detroit/windsor') || lowerActivity.includes('arrive niagara falls')) { iconClass = 'fas fa-flag-checkered'; }
-                             else if (lowerActivity.includes('settle in')) { iconClass = 'fas fa-bed'; }
+                             else if (lowerActivity.includes('arrive baker city') || lowerActivity.includes('arrive chicago') || lowerActivity.includes('arrive buffalo') || lowerActivity.includes('arrive pendleton') || lowerActivity.includes('arrive marchesi') || lowerActivity.includes('arrive detroit/windsor') || lowerActivity.includes('arrive niagara falls') || lowerActivity.includes('arrive boise') || lowerActivity.includes('arrive sun valley') || lowerActivity.includes('arrive laramie') || lowerActivity.includes('arrive cheyenne') || lowerActivity.includes('arrive north platte') || lowerActivity.includes('arrive kearney') || lowerActivity.includes('arrive in omaha') || lowerActivity.includes('arrive davenport') || lowerActivity.includes('arrive london') || lowerActivity.includes('arrive ogden') || lowerActivity.includes('arrive steamboat springs')) { iconClass = 'fas fa-flag-checkered'; }
+                             else if (lowerActivity.includes('settle in') || lowerActivity.includes('check-in')) { iconClass = 'fas fa-bed'; }
                              else if (lowerActivity.includes('tbd')) { iconClass = 'fas fa-question-circle'; }
                              else if (lowerActivity.includes('coffee') || lowerActivity.includes('cafe')) { iconClass = 'fas fa-coffee'; }
-                             else if (lowerActivity.includes('walk') || lowerActivity.includes('riverwalk') || lowerActivity.includes('parkway') || lowerActivity.includes('windsor riverfront') || lowerActivity.includes('stroll')) { iconClass = 'fas fa-person-walking'; }
+                             else if (lowerActivity.includes('walk') || lowerActivity.includes('riverwalk') || lowerActivity.includes('parkway') || lowerActivity.includes('windsor riverfront') || lowerActivity.includes('stroll') || lowerActivity.includes('greenbelt') || lowerActivity.includes('dog relief')) { iconClass = 'fas fa-person-walking'; }
                              else if (lowerActivity.includes('niagara falls')) { iconClass = 'fas fa-water'; }
                              else if (lowerActivity.includes('cross border')) { iconClass = 'fas fa-globe-americas'; }
-                             else if (lowerActivity.includes('snack') || lowerActivity.includes('pastry')) { iconClass = 'fas fa-bread-slice'; }
+                             else if (lowerActivity.includes('snack') || lowerActivity.includes('pastry') || lowerActivity.includes('quick bite')) { iconClass = 'fas fa-bread-slice'; }
                              else if (lowerActivity.includes('brewery')) { iconClass = 'fas fa-beer-mug-empty'; }
+                             else if (lowerActivity.includes('refuel')) { iconClass = 'fas fa-gas-pump'; }
+                             else if (lowerActivity.includes('great salt lake')) { iconClass = 'fas fa-water-lower';}
 
 
                              activityListHtml += `<li class="list-item"><i class="${iconClass} list-icon activity-icon"></i><span class="flex-1">${activity}</span></li>`;
@@ -448,7 +548,8 @@
                             else if (lowerNote.includes('canada') || lowerNote.includes('border crossing')) { iconClass = 'fas fa-passport'; }
                             else if (lowerNote.includes('trail condition')) { iconClass = 'fas fa-triangle-exclamation'; }
                             else if (lowerNote.includes('find activity') || lowerNote.includes('remember')) { iconClass = 'fas fa-lightbulb'; }
-                            else if (lowerNote.includes('long day') || lowerNote.includes('long driving day')) { iconClass = 'fas fa-exclamation-circle'; }
+                            else if (lowerNote.includes('long day') || lowerNote.includes('long driving day') || lowerNote.includes('packed day')) { iconClass = 'fas fa-exclamation-circle'; }
+                            else if (lowerNote.includes('refuel')) { iconClass = 'fas fa-gas-pump'; }
                         }
                         const displayStyle = isChargerNote && !chargerInfoVisible ? 'style="display: none;"' : '';
                         detailsHtml += `<li class="${liClass}" ${displayStyle}><i class="${iconClass} list-icon note-icon"></i><span class="flex-1">`;
